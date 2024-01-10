@@ -1,3 +1,4 @@
+using AutoMapper;
 using Domain.Interfaces;
 using Domain.Interfaces.Generics;
 using Domain.Interfaces.InterfacesServices;
@@ -9,6 +10,7 @@ using Infrastructure.Repository.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using WebApi.Models;
 using WebApi.Token;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -71,6 +73,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                  };
              });
 
+var config = new AutoMapper.MapperConfiguration(cfg =>
+{
+    cfg.CreateMap<MessageViewModel, Message>();
+    cfg.CreateMap<Message, MessageViewModel>();
+});
+
+IMapper mapper = config.CreateMapper();
+builder.Services.AddSingleton(mapper);
 
 var app = builder.Build();
 
