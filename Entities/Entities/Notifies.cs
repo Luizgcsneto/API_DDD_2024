@@ -14,5 +14,19 @@ namespace Entities.Entities
         public string Mensagem { get; set; }
         [NotMapped]
         public List<Notifies> Notificacoes { get; set; }
+
+        public bool ValidarPropriedadeString(string valor, string nomePropriedade)
+        {
+            if(string.IsNullOrWhiteSpace(valor) || string.IsNullOrWhiteSpace(nomePropriedade))
+            {
+                Notificacoes.Add(new Notifies()
+                {
+                    Mensagem = "Campo Obrigatório",
+                    NomePropriedade = nomePropriedade,
+                });
+                return false;
+            }
+            return true;
+        }
     }
 }
