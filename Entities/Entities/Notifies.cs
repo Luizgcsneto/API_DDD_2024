@@ -4,6 +4,10 @@ namespace Entities.Entities
 {
     public class Notifies
     {
+        public Notifies()
+        {
+            Notificacoes = new List<Notifies>();
+        }
         [NotMapped]
         public string NomePropriedade { get; set; }
         [NotMapped]
