@@ -99,8 +99,10 @@ app.UseCors(x => x.AllowAnyOrigin()
 .AllowAnyHeader()
 .WithOrigins(devClient));
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseSwaggerUI();
 
 app.Run();
