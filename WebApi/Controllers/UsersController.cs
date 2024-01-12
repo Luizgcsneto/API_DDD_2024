@@ -41,18 +41,18 @@ namespace WebApi.Controllers
 
             if (resultado.Succeeded)
             {
-           
+                // Recupera Usuário Logado
                 var userCurrent = await _userManager.FindByEmailAsync(login.Email);
                 var idUsuario = userCurrent.Id;
 
                 var token = new TokenJwtBuilder()
-               .AddSecurityKey(JwtSecurityKey.Create("0c6873bdbc50864cc7eba8b4a713a73749d2715861bfc1218fe38e81a0b66689"))
-               .AddSubject("Projeto de DDD com o .Net 6")
-               .AddIssuer("Teste.Securiry.Bearer")
-               .AddAudience("Teste.Securiry.Bearer")
-               .AddClaim("idUsuario ", idUsuario)
-               .AddExperiInMinutes(5)
-               .Builder();
+                    .AddSecurityKey(JwtSecurityKey.Create("843d453810d51b92eed7e9d91ee234a84dff804980b4e03be4d40395bc441442"))
+                .AddSubject("Projeto .Net Core com DDD")
+                .AddIssuer("Teste.Securiry.Bearer")
+                .AddAudience("Teste.Securiry.Bearer")
+                .AddClaim("idUsuario", idUsuario)
+                .AddExperiInMinutes(5)
+                .Builder();
 
                 return Ok(token.value);
 

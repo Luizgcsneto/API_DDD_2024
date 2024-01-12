@@ -21,12 +21,65 @@ namespace WebApi.Controllers
 
         [Authorize]
         [Produces("application/json")]
-        [HttpPost("/api/CriarTokenIdentity")]
+        [HttpPost("/api/Add")]
         public async Task<List<Notifies>> Add(MessageViewModel message)
         {
+            message.UserId = await RetornarIdUsuarioLogado();
+
+            var messageMap = _Imapper.Map<Message>(message);
+            await _Imessage.Add(messageMap);
+
+            return messageMap.Notificacoes;
 
         }
 
+        [Authorize]
+        [Produces("application/json")]
+        [HttpPut("/api/Update")]
+        public async Task<List<Notifies>> Update(MessageViewModel message)
+        {
+            
+            var messageMap = _Imapper.Map<Message>(message);
+            await _Imessage.Update(messageMap);
+
+            return messageMap.Notificacoes;
+        }
+
+        [Authorize]
+        [Produces("application/json")]
+        [HttpDelete("/api/Delete")]
+        public async Task<List<Notifies>> Delete(MessageViewModel message)
+        {
+          
+            var messageMap = _Imapper.Map<Message>(message);
+            await _Imessage.Delete(messageMap);
+
+            return messageMap.Notificacoes;
+
+        }
+
+        [Authorize]
+        [Produces("application/json")]
+        [HttpGet("/api/GetEntityById")]
+        public async Task<MessageViewModel> GetEntityById(Message message)
+        {
+            message = await _Imessage.GetEntityById(message.Id);
+            var messageMap = _Imapper.Map<MessageViewModel>(message);
+
+            return messageMap;
+        }
+
+        [Authorize]
+        [Produces("application/json")]
+        [HttpGet("/api/List")]
+        public async Task<List<MessageViewModel>> List()
+        {
+            
+            var messages = await _Imessage.List();
+            var messageMap = _Imapper.Map<List<MessageViewModel>>(messages);
+
+            return messageMap;
+        }
 
         private async Task<string> RetornarIdUsuarioLogado()
         {
@@ -37,6 +90,7 @@ namespace WebApi.Controllers
             }
 
             return string.Empty;
+
         }
     }
 }
