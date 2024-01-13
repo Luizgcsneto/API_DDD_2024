@@ -1,4 +1,3 @@
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System.Linq;
@@ -6,20 +5,21 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using WebApi.Models;
 
 namespace TestProjectAPI2024
 {
     [TestClass]
     public class UnitTest1
     {
-        public static string token { get; set; }
+        public static string Token { get; set; }
 
         [TestMethod]
-        public void TestMethod1()
+        public void TestMethod2()
         {
             var result = ChamaApiPost("https://localhost:7216/api/List").Result;
 
-            var listaMessage = JsonConvert.DeserializeObject<Message[]>(result).ToList();
+            var listaMessage = JsonConvert.DeserializeObject<MessageViewModel[]>(result).ToList();
 
             Assert.IsTrue(listaMessage.Any());
         }
@@ -31,8 +31,8 @@ namespace TestProjectAPI2024
 
             using (var cliente = new HttpClient())
             {
-                string login = "teste1@gmail.com";
-                string senha = "@Teste123";
+                string login = "xepa2@gmail.com";
+                string senha = "Axepa2@123";
                 var dados = new
                 {
                     email = login,
@@ -47,7 +47,7 @@ namespace TestProjectAPI2024
                 if (resultado.Result.IsSuccessStatusCode)
                 {
                     var tokenJson = resultado.Result.Content.ReadAsStringAsync();
-                    token = JsonConvert.DeserializeObject(tokenJson.Result).ToString();
+                    Token = JsonConvert.DeserializeObject(tokenJson.Result).ToString();
                 }
 
             }
@@ -56,12 +56,12 @@ namespace TestProjectAPI2024
         public string ChamaApiGet(string url)
         {
             GetToken(); // Gerar token
-            if (!string.IsNullOrWhiteSpace(token))
+            if (!string.IsNullOrWhiteSpace(Token))
             {
                 using (var cliente = new HttpClient())
                 {
                     cliente.DefaultRequestHeaders.Clear();
-                    cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
                     var response = cliente.GetStringAsync(url);
                     response.Wait();
                     return response.Result;
@@ -79,12 +79,12 @@ namespace TestProjectAPI2024
             var content = new StringContent(JsonObjeto, Encoding.UTF8, "application/json");
 
             GetToken(); // Gerar token
-            if (!string.IsNullOrWhiteSpace(token))
+            if (!string.IsNullOrWhiteSpace(Token))
             {
                 using (var cliente = new HttpClient())
                 {
                     cliente.DefaultRequestHeaders.Clear();
-                    cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
                     var response = cliente.PostAsync(url, content);
                     response.Wait();
                     if (response.Result.IsSuccessStatusCode)
