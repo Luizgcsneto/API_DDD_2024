@@ -14,17 +14,29 @@ namespace Domain.Services
 
         public async Task Adicionar(Message objeto)
         {
-            throw new NotImplementedException();
+            var validaTitulo = objeto.ValidarPropriedadeString(objeto.Titulo, "Titulo");
+            if (validaTitulo)
+            {
+                objeto.DataCadastro = DateTime.Now;
+                objeto.DataAlteracao = DateTime.Now;
+                objeto.Ativo = true;
+                await _IMessage.Add(objeto);
+            }
         }
 
         public async Task Atualizar(Message objeto)
         {
-            throw new NotImplementedException();
+            var validaTitulo = objeto.ValidarPropriedadeString(objeto.Titulo, "Titulo");
+            if (validaTitulo)
+            {
+                objeto.DataAlteracao = DateTime.Now;
+                await _IMessage.Update(objeto);
+            }
         }
 
         public async Task<List<Message>> ListarMensagensAtivas()
         {
-            throw new NotImplementedException();
+            return await _IMessage.ListarMessages(x => x.Ativo);
         }
     }
 }
