@@ -2,11 +2,13 @@ using AutoMapper;
 using Domain.Interfaces;
 using Domain.Interfaces.Generics;
 using Domain.Interfaces.InterfacesServices;
+using Domain.InterfacesExternal;
 using Domain.Services;
 using Entities.Entities;
 using Infrastructure.Configuration;
 using Infrastructure.Repository.Generics;
 using Infrastructure.Repository.Repositories;
+using Infrastructure.RepositoryExternal;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -38,6 +40,7 @@ builder.Services.AddRazorPages();
 //INTERFACE E REPOSITORY
 builder.Services.AddSingleton(typeof(IGeneric<>), typeof(RepositoryGeneric<>));
 builder.Services.AddSingleton<IMessage, RepositoryMessage>();
+builder.Services.AddSingleton<IProduto, RepositoryProduto>();
 
 // SERVICE E DOMAIN
 builder.Services.AddSingleton<IServiceMessage, ServiceMessage>();
