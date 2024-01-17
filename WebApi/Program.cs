@@ -96,7 +96,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var devClient = "http://localhost:4200";
+//var devClient = "http://localhost:4200"; // angular
+var devClient = "http://localhost:3000"; // react
 app.UseCors(x => x.AllowAnyOrigin()
 .AllowAnyMethod()
 .AllowAnyHeader()

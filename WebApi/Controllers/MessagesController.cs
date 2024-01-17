@@ -15,7 +15,7 @@ namespace WebApi.Controllers
         private readonly IMapper _Imapper;
         private readonly IMessage _Imessage;
         private readonly IServiceMessage _IserviceMessage;
-        public MessagesController(IMapper Imapper, 
+        public MessagesController(IMapper Imapper,
             IMessage Imessage,
             IServiceMessage IserviceMessage)
         {
@@ -40,10 +40,10 @@ namespace WebApi.Controllers
 
         [Authorize]
         [Produces("application/json")]
-        [HttpPut("/api/Update")]
+        [HttpPost("/api/Update")]
         public async Task<List<Notifies>> Update(MessageViewModel message)
         {
-            
+
             var messageMap = _Imapper.Map<Message>(message);
             await _IserviceMessage.Atualizar(messageMap);
 
@@ -52,10 +52,10 @@ namespace WebApi.Controllers
 
         [Authorize]
         [Produces("application/json")]
-        [HttpDelete("/api/Delete")]
+        [HttpPost("/api/Delete")]
         public async Task<List<Notifies>> Delete(MessageViewModel message)
         {
-          
+
             var messageMap = _Imapper.Map<Message>(message);
             await _Imessage.Delete(messageMap);
 
@@ -65,10 +65,10 @@ namespace WebApi.Controllers
 
         [Authorize]
         [Produces("application/json")]
-        [HttpGet("/api/GetEntityById")]
-        public async Task<MessageViewModel> GetEntityById(Message message)
+        [HttpPost("/api/GetEntityById")]
+        public async Task<MessageViewModel> GetEntityById(MessageViewModel messageVM)
         {
-            message = await _Imessage.GetEntityById(message.Id);
+            var message = await _Imessage.GetEntityById(messageVM.Id);
             var messageMap = _Imapper.Map<MessageViewModel>(message);
 
             return messageMap;
@@ -79,7 +79,6 @@ namespace WebApi.Controllers
         [HttpGet("/api/List")]
         public async Task<List<MessageViewModel>> List()
         {
-            
             var messages = await _Imessage.List();
             var messageMap = _Imapper.Map<List<MessageViewModel>>(messages);
 
@@ -91,7 +90,6 @@ namespace WebApi.Controllers
         [HttpGet("/api/ListarMensagensAtivas")]
         public async Task<List<MessageViewModel>> ListarMensagensAtivas()
         {
-
             var messages = await _IserviceMessage.ListarMensagensAtivas();
             var messageMap = _Imapper.Map<List<MessageViewModel>>(messages);
 
@@ -100,6 +98,7 @@ namespace WebApi.Controllers
 
         private async Task<string> RetornarIdUsuarioLogado()
         {
+
             if (User != null)
             {
                 var idUsuario = User.FindFirst("idUsuario");
